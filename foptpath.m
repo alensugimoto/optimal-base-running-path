@@ -7,8 +7,8 @@ function foptpath(numIterations,num,rep)
 %    of this function. For a brief explanation of how it goes about finding
 %    the fastest path, see my video (link below).
 %
-%    Research paper:
-%    Video:
+%    Research paper: https://github.com/alensugimoto/optimum-path-finding-function/blob/master/ResearchPaper.pdf
+%    Video: https://github.com/alensugimoto/optimum-path-finding-function/blob/master/ExplanationOfFunction.mp4
 
 % WORKS CITED
 % 
