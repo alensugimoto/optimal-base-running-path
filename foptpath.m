@@ -12,16 +12,16 @@ function foptpath(numIterations,num,rep)
 
 % WORKS CITED
 % 
-% Beltman, Floris. ìOptimization of Ideal Racing Line.î PDF. Amsterdam: Floris Beltman,
+% Beltman, Floris. ‚ÄúOptimization of Ideal Racing Line.‚Äù PDF. Amsterdam: Floris Beltman,
 %     2008. https://beta.vu.nl/nl/Images/werkstuk-beltman_tcm235-91313.pdf.
-% Cardamone, L., Loiacono, D., Lanzi, P.L., and Bardelli, A.P. ìSearching for the Optimal
-%     Racing Line Using Genetic Algorithms.î ResearchGate. September 2010.
+% Cardamone, L., Loiacono, D., Lanzi, P.L., and Bardelli, A.P. ‚ÄúSearching for the Optimal
+%     Racing Line Using Genetic Algorithms.‚Äù ResearchGate. September 2010.
 %     https://www.researchgate.net/profile/Daniele_Loiacono/publication/224180066_S
 %     earching_for_the_Optimal_Racing_Line_Using_Genetic_Algorithms/links/00b7d
 %     525e4a7499325000000/Searching-for-the-Optimal-Racing-Line-Using-GeneticAlgorithms.pdf.
-% Carozza, D., Johnson, S. and Morgan, F. ìBaserunnerís Optimal Path.î Math
+% Carozza, D., Johnson, S. and Morgan, F. ‚ÄúBaserunner‚Äôs Optimal Path.‚Äù Math
 %     Intelligencer 32, no. 4 (2010): 10-15. https://doi.org/10.1007/s00283-009-9106-2.
-% OíHaver, Tom. ìFast smoothing function.î MATLAB Central File Exchange.
+% O‚ÄôHaver, Tom. ‚ÄúFast smoothing function.‚Äù MATLAB Central File Exchange.
 %     MathWorks. Updated February 14, 2017.
 %     https://www.mathworks.com/matlabcentral/fileexchange/19998-fast-smoothingfunction.
 % Tipping, Michael E. (Girton, GB), Hatton, Mark Andrew (Eye, GB), and Herbrich, Ralf
@@ -420,6 +420,3 @@ end
 fprintf('Fastest path''s time: %4.2f sec (2DP)\n', t_min);
 
 end
-
-
-
