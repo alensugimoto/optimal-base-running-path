@@ -1,56 +1,48 @@
-function foptpath(numIterations,num,rep)
+function foptpath(numIterations,rep,num)
 
-% This function finds the fastest base running path from home to second
-% base on a baseball field based on my ability to run. It assumes that when
-% I run, the magnitude of jerk is always zero.
-%    Please see my research paper (link below) for a detailed explanation
-%    of this function. For a brief explanation of how it goes about finding
-%    the fastest path, see my video (link below).
+% FOPTPATH finds the fastest base running path from home to second base in
+% a sample of [value of numIterations] random paths. It does this by
+% calculating the time it would take to run along each random path, given
+% that the runner sprints at a max speed of [value of v_max] ft/s,
+% accelerates at [value of a_max] ft/s^2, decelerates at [value of a_min]
+% ft/s^2, and sprints at [value of sqac(1)*sqrt("R")+sqac(2)] along a curve
+% with radius of curvature "R". Therefore, with a large value for
+% numIterations, the function can find an excellent approximation of the
+% fastest path that an individual should take to go from home to second
+% base.
+%    Please read my academic paper (see link below) for a detailed
+%    explanation of this function.
 %
-%    Research paper: https://github.com/alensugimoto/optimum-path-finding-function/blob/master/ResearchPaper.pdf
-%    Video: https://github.com/alensugimoto/optimum-path-finding-function/blob/master/ExplanationOfFunction.mp4
-
-% WORKS CITED
-% 
-% Beltman, Floris. â€œOptimization of Ideal Racing Line.â€? PDF. Amsterdam: Floris Beltman,
-%     2008. https://beta.vu.nl/nl/Images/werkstuk-beltman_tcm235-91313.pdf.
-% Cardamone, L., Loiacono, D., Lanzi, P.L., and Bardelli, A.P. â€œSearching for the Optimal
-%     Racing Line Using Genetic Algorithms.â€? ResearchGate. September 2010.
-%     https://www.researchgate.net/profile/Daniele_Loiacono/publication/224180066_S
-%     earching_for_the_Optimal_Racing_Line_Using_Genetic_Algorithms/links/00b7d
-%     525e4a7499325000000/Searching-for-the-Optimal-Racing-Line-Using-GeneticAlgorithms.pdf.
-% Carozza, D., Johnson, S. and Morgan, F. â€œBaserunnerâ€™s Optimal Path.â€? Math
-%     Intelligencer 32, no. 4 (2010): 10-15. https://doi.org/10.1007/s00283-009-9106-2.
-% Oâ€™Haver, Tom. â€œFast smoothing function.â€? MATLAB Central File Exchange.
-%     MathWorks. Updated February 14, 2017.
-%     https://www.mathworks.com/matlabcentral/fileexchange/19998-fast-smoothingfunction.
-% Tipping, Michael E. (Girton, GB), Hatton, Mark Andrew (Eye, GB), and Herbrich, Ralf
-%     (Cambridge, GB). 2013. Racing line optimization. US Patent 8,393,944 B2, filed
-%     January 13, 2011, and issued June 9, 2011.
-% Xiong, Ying. Racing Line Optimization. Cambridge: Massachusetts Institute of
-%     Technology, Computation for Design and Optimization Program, 2010.
+%    https://github.com/alensugimoto/optimum-path-finding-function/blob/
+%    master/academicPaper.pdf
 
 % UNITS
 % 
 % feet and seconds
 
-% INPUT ARGUMENTS
+% INPUTS
 % 
-% numIterations >>
-% Compare [value of numIterations] paths before termination.
+% numIterations: 1 (default)
+%    # == foptpath compares # paths before terminating
 % 
-% num >>
-% ~1 == normal algorithm (recommended)
-%  1 == precise but slow algorithm
+% rep: 1 (default)
+%    # == foptpath displays the fastest path found so far after every #
+%         paths
 % 
-% rep >> 
-% After every [value of rep] paths, display fastest path found so far.
+% num: 0 (default)
+%   ~1 == foptpath runs normally
+%    1 == foptpath is precise but slow
 
+% BIBLIOGRAPHY
+% 
+% Tom O'Haver (2020). Fast smoothing function (https://www.mathworks.com/
+%    matlabcentral/fileexchange/19998-fast-smoothing-function), MATLAB
+%    Central File Exchange. Retrieved Jan 6, 2020.
 
 switch nargin
     case 3
     case 2
-        rep = 1;
+        num = 0;
     case 1
         num = 0;
         rep = 1;
@@ -60,15 +52,15 @@ switch nargin
         rep = 1;
 end
 
-% The following values are obtained from a collection of data and are based
-% on my running ability.
-maxPerpDist = 30.5;
+% Edit the following values accordingly
 v_max = 268/12;
 a_max = v_max/3.11;
 a_min = -v_max/(9.63-8.22);
 sqac = [3.73 1.75];
 
 % the body of the function starts here
+
+maxPerpDist = ((v_max-sqac(2))/sqac(1))^2;
 numPerpPoints = round(maxPerpDist+1);
 numParaPoints = 6;
 distBetwBases = 89;
@@ -96,8 +88,7 @@ ylabel('y (ft)')
 yticks([0 89])
 yticklabels({'0','89'})
 title({'A graph of the fastest path from home to second','base produced after comparing 0 path(s)'})
-legend([b(1) b(2) b(3)],{'home base','inner corner of first base','second base',...
-    },'Location','NorthWest')
+legend([b(1) b(2) b(3)],{'home base','inner corner of first base','second base'},'Location','NorthWest')
 grid on
 grid minor
 
@@ -193,16 +184,14 @@ for i = 1:numIterations
 
     % smooth path through first
     mA = -1/pp2.coefs(1,3);
-    mB = -1/(3*pp1.coefs(end,1)*(x1(end)-x1(end-1))^2+2*pp1.coefs(end,2)*(x1(end)-...
-        x1(end-1))+pp1.coefs(end,3));
+    mB = -1/(3*pp1.coefs(end,1)*(x1(end)-x1(end-1))^2+2*pp1.coefs(end,2)*(x1(end)-x1(end-1))+pp1.coefs(end,3));
 
     rise = 1/sqrt(1+mB^2) + 1/sqrt(1+1/mA^2);
     run = 1/sqrt(1+1/mB^2) + 1/sqrt(1+mA^2);
     mav = rise/run;
 
     f_p = pp1.coefs(end,3);
-    A = [3*(x1(end)-x1(end-1))^2 2*(x1(end)-x1(end-1)); (x1(end)-x1(end-1))^3 (x1(end)...
-        -x1(end-1))^2];
+    A = [3*(x1(end)-x1(end-1))^2 2*(x1(end)-x1(end-1)); (x1(end)-x1(end-1))^3 (x1(end)-x1(end-1))^2];
     B = [mav-f_p; -y1(end-1)-f_p*(x1(end)-x1(end-1))];
     x = linsolve(A,B);
     pp1.coefs(end,:) = [x(1,:) x(2,:) f_p y1(end-1)];
